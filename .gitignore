@@ -1,3 +1,8 @@
+# ignore local static file root or local cdn
+local-cdn/
+# ignore vendor static files
+src\staticfiles\vendors
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
