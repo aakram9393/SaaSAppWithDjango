@@ -28,6 +28,7 @@ SECRET_KEY = config("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = str(os.environ.get("DEBUG")).lower() == "true"
 DEBUG = config("DJANGO_DEBUG", cast=bool)
+print(f"Debug {DEBUG}")
 print("DEBUG", DEBUG, type(DEBUG))
 
 ALLOWED_HOSTS = [
@@ -58,6 +59,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -158,6 +160,15 @@ STATICFILES_DIRS = [
 # output for mpython manage.py collectstatic
 # local cdn --> prod cdn
 STATIC_ROOT = BASE_DIR / "local-cdn"
+# < django 4.2
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    }
+}
+WHITENOISE_MANIFEST_STRICT = False
 
 if not DEBUG:
     STATIC_ROOT = BASE_DIR / "prod-cdn"
